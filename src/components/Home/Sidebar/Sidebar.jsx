@@ -1,5 +1,4 @@
 import {
-	AiOutlineArrowDown,
 	AiOutlineDatabase,
 	AiOutlineHome,
 	AiOutlineSetting,
@@ -10,7 +9,9 @@ import { Link } from "react-router-dom";
 const Sidebar = () => {
 	return (
 		<div className="w-[316px]  p-4">
-			<h1 className="text-4xl px-5 text-red-600">LOTTE</h1>
+			<Link to="/" className=" cursor-pointer text-4xl px-5 text-red-600">
+				LOTTE
+			</Link>
 			<div className="py-6 ">
 				<ul className="flex flex-col gap-5">
 					<li>

@@ -1,8 +1,8 @@
-import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+
 import Dashboard from "./components/Dashboard";
 import Sidebar from "./components/Home/Sidebar/Sidebar";
 import Login from "./components/Login";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Setting from "./components/Setting";
 import TransactionManagement from "./components/TransactionManagement";
 import OrderManagement from "./components/OrderManagement";
@@ -14,9 +14,9 @@ function App() {
 	return (
 		<Router>
 			<div className="min-h-screen flex">
-				{/* <Login /> */}
 				<Sidebar />
 				<Routes>
+					<Route path="/login" element={<Login />} />
 					<Route path="/" element={<Dashboard />} />
 					<Route path="/setting" element={<Setting />} />
 					<Route path="/quan-ly-don-hang" element={<OrderManagement />} />

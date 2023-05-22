@@ -1,6 +1,7 @@
-const Input = ({ id, onChange, value, label, type }) => {
+const Input = ({ id, onChange, value, label, type, disabled }) => {
 	return (
 		<input
+			disabled={disabled}
 			onChange={onChange}
 			type={type}
 			value={value}
