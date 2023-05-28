@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Table, Modal, Input as InputAnt, Form } from "antd";
+import { Table, Modal, Input as InputAntd, Form } from "antd";
 import { DeleteOutlined, EditOutlined, EyeOutlined } from "@ant-design/icons";
 import { AiOutlinePlus } from "react-icons/ai";
 
@@ -78,6 +78,14 @@ const ManageTicketType = () => {
 	const [editingUser, setEditingUser] = useState(null);
 	const [isOpenUser, setIsOpenUser] = useState(false);
 	const [viewUser, setViewUser] = useState(null);
+	const [addTicket, setAddTicket] = useState({
+		typeCode: "",
+		name: "",
+		price1: "",
+		price2: "119.000",
+		vat: "",
+		status: "Hoạt động",
+	});
 
 	const columns = [
 		{
@@ -113,7 +121,7 @@ const ManageTicketType = () => {
 		{
 			key: "7",
 			title: "Trạng thái",
-			dataIndex: "status",
+			render: () => <span className="text-green-500">Hoạt động</span>,
 		},
 		{
 			key: "8",
@@ -170,6 +178,12 @@ const ManageTicketType = () => {
 		setViewUser({ ...record });
 	};
 
+	const handleAddUser = (record) => {
+		const id = Math.floor(Math.random() * 1000);
+		const formAddTicket = { ...addTicket, id };
+		setDataSource((prev) => [...prev, formAddTicket]);
+		setIsOpenAddUser(false);
+	};
 	return (
 		<>
 			<div className="w-full overflow-x-hidden">
@@ -206,59 +220,181 @@ const ManageTicketType = () => {
 						Tạo mới
 					</Button>
 				</div>
-				<Table dataSource={dataSource} columns={columns} />
+				<Table
+					dataSource={dataSource}
+					columns={columns}
+					rowKey={(record) => record.id}
+				/>
 
 				{/* modal add */}
 				<Modal
 					open={isOpenAddUser}
-					onOk={() => setIsOpenAddUser(false)}
+					onOk={handleAddUser}
 					onCancel={() => setIsOpenAddUser(false)}
 					width={1200}
 					okType="danger"
 					okText="Xác nhận"
+					cancelText="Hủy"
 				>
 					<p className="text-[#FF5B00] text-2xl pb-4">Thêm mới đơn hàng</p>
 					<div className="border-t border-2 w-full "></div>
-					<div className="p-5 ">
-						<div className="w-full  p-4 flex flex-col justify-between gap-6">
-							<div className="flex flex-col lg:flex-row lg:justify-between -mx-8 gap-4">
-								<div className="flex items-center gap-10  w-[400px]">
-									<label className="w-[200px]">Mã đơn hàng</label>
-									<Input disabled />
-								</div>
-								<div className="flex items-center gap-10 w-[400px]">
-									<label className="w-[200px]">Mã khách hàng *</label>
-									<Input type="date1" />
-								</div>
+					{/* <Form
+						labelCol={{
+							span: 5,
+						}}
+						// wrapperCol={{
+						// 	span: 16,
+						// }}
+						className="w-full py-5"
+						initialValues={{
+							remember: true,
+						}}
+					>
+						<div className="grid grid-cols-1 lg:grid-cols-2  ">
+							<Form.Item
+								label="Mã vé "
+								name="typeCode"
+								rules={[{ required: true }]}
+							>
+								<InputAntd
+									value={addTicket.typeCode}
+									onChange={(e) =>
+										setAddTicket((prev) => ({
+											...prev,
+											typeCode: e.target.value,
+										}))
+									}
+								/>
+							</Form.Item>
+							<Form.Item
+								label="Tên vé "
+								name="name"
+								rules={[
+									{ required: true, message: "Please input your username!" },
+								]}
+							>
+								<InputAntd
+									className="py-2"
+									value={addTicket.name}
+									onChange={(e) =>
+										setAddTicket((prev) => ({ ...prev, name: e.target.value }))
+									}
+								/>
+							</Form.Item>
+							<Form.Item
+								label="Giá trước VAT "
+								name="price1"
+								rules={[{ required: true }]}
+							>
+								<InputAntd
+									value={addTicket.price1}
+									onChange={(e) =>
+										setAddTicket((prev) => ({
+											...prev,
+											price1: e.target.value,
+										}))
+									}
+									suffix="VND"
+								/>
+							</Form.Item>
+							<Form.Item label="VAT">
+								<InputAntd
+									value={addTicket.vat}
+									onChange={(e) =>
+										setAddTicket((prev) => ({ ...prev, vat: e.target.value }))
+									}
+									suffix="%"
+								/>
+							</Form.Item>
+							<Form.Item label="Giá sau VAT " rules={[{ required: true }]}>
+								<InputAntd value={addTicket.price2} disabled suffix="VND" />
+							</Form.Item>
+							<Form.Item label="Trạng thái">
+								<InputAntd value={addTicket.status} disabled />
+							</Form.Item>
+						</div>
+					</Form> */}
+					<p>Thông tin khách hàng</p>
+					<Form
+						labelCol={{
+							span: 5,
+						}}
+						// wrapperCol={{
+						// 	span: 16,
+						// }}
+						className="w-full py-5 "
+						initialValues={{
+							remember: true,
+						}}
+					>
+						<div className="grid grid-cols-1 lg:grid-cols-2 items-center ">
+							<div>
+								<Form.Item
+									label="Mã khách hàng "
+									name="typeCode"
+									rules={[{ required: true }]}
+								>
+									<InputAntd
+										className="py-2"
+										value={addTicket.typeCode}
+										onChange={(e) =>
+											setAddTicket((prev) => ({
+												...prev,
+												typeCode: e.target.value,
+											}))
+										}
+									/>
+								</Form.Item>
+								<Form.Item
+									label="Tên khách hàng "
+									name="name"
+									rules={[
+										{ required: true, message: "Please input your username!" },
+									]}
+								>
+									<InputAntd
+										className="py-2"
+										value={addTicket.name}
+										onChange={(e) =>
+											setAddTicket((prev) => ({
+												...prev,
+												name: e.target.value,
+											}))
+										}
+									/>
+								</Form.Item>
+								<Form.Item
+									label="Số điện thoại "
+									name="price1"
+									rules={[{ required: true }]}
+								>
+									<InputAntd
+										className="py-2"
+										value={addTicket.price1}
+										onChange={(e) =>
+											setAddTicket((prev) => ({
+												...prev,
+												price1: e.target.value,
+											}))
+										}
+										suffix="VND"
+									/>
+								</Form.Item>
 							</div>
-							<div className="flex flex-col lg:flex-row lg:justify-between -mx-8 gap-4">
-								<div className="flex  items-center gap-10 w-[400px]">
-									<label className="w-[200px]">Tên khách hàng</label>
-									<Input />
-								</div>
-								<div className="flex  items-center gap-10 w-[400px]">
-									<label className="w-[200px]">Trạng thái</label>
-									<Input />
-								</div>
-							</div>
-							<div className="flex flex-col lg:flex-row lg:justify-between -mx-8 gap-4">
-								<div className="flex  items-center gap-10 w-[400px]">
-									<label className="w-[200px]">Trạng thái *</label>
-									<Input />
-								</div>
-								<div className="flex  items-center gap-10 w-[400px]">
-									<label className="w-[200px]">
-										Khoảng thời gian hết hạn *
-									</label>
-									<Input />
-								</div>
-								<div className="flex  items-center gap-10 w-[400px]">
-									<label className="w-[200px]">Ngày hết hạn *</label>
-									<Input type="date" />
-								</div>
+							<div>
+								<Form.Item label="Địa chỉ mail ">
+									<InputAntd
+										className="py-2"
+										value={addTicket.vat}
+										onChange={(e) =>
+											setAddTicket((prev) => ({ ...prev, vat: e.target.value }))
+										}
+										suffix="%"
+									/>
+								</Form.Item>
 							</div>
 						</div>
-					</div>
+					</Form>
 				</Modal>
 
 				{/* modal edit */}
@@ -288,7 +424,7 @@ const ManageTicketType = () => {
 							<div className="flex flex-col lg:flex-row lg:justify-between -mx-8 gap-4">
 								<div className="flex items-center gap-10  w-[400px]">
 									<label className="w-[200px]">Mã vé *</label>
-									<InputAnt
+									<InputAntd
 										disabled
 										value={editingUser?.typeCode}
 										onChange={(e) => {
@@ -300,23 +436,42 @@ const ManageTicketType = () => {
 								</div>
 								<div className="flex items-center gap-10 w-[400px]">
 									<label className="w-[200px]">Tên vé *</label>
-									<InputAnt value={editingUser?.typeCode} />
+									<InputAntd
+										value={editingUser?.name}
+										onChange={(e) => {
+											setEditingUser((prev) => {
+												return { ...prev, name: e.target.value };
+											});
+										}}
+									/>
 								</div>
 							</div>
 							<div className="flex flex-col lg:flex-row lg:justify-between -mx-8 gap-4">
 								<div className="flex items-center gap-10 w-[400px]">
 									<label className="w-[200px]">Giá trước VAT *</label>
-									<InputAnt value={editingUser?.price1} suffix="VND" />
+									<InputAntd
+										value={editingUser?.price1}
+										suffix="VND"
+										onChange={(e) => {
+											setEditingUser((prev) => {
+												return { ...prev, price1: e.target.value };
+											});
+										}}
+									/>
 								</div>
 								<div className="flex  items-center gap-10 w-[400px]">
 									<label className="w-[200px]">VAT</label>
-									<InputAnt value={editingUser?.vat} suffix="%" />
+									<InputAntd value={editingUser?.vat} suffix="%" />
 								</div>
 							</div>
 							<div className="flex flex-col lg:flex-row lg:justify-between -mx-8 gap-4">
 								<div className="flex  items-center gap-10 w-[400px]">
 									<label className="w-[200px]">Giá sau VAT *</label>
-									<InputAnt value={editingUser?.price1} suffix="VND" disabled />
+									<InputAntd
+										value={editingUser?.price2}
+										suffix="VND"
+										disabled
+									/>
 								</div>
 								<div className="flex  items-center gap-10 w-[400px]">
 									<label className="w-[200px]">Trạng thái</label>

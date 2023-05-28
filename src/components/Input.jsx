@@ -1,4 +1,4 @@
-const Input = ({ id, onChange, value, label, type, disabled }) => {
+const Input = ({ id, onChange, value, label, type, disabled, required }) => {
 	return (
 		<input
 			disabled={disabled}
@@ -6,6 +6,7 @@ const Input = ({ id, onChange, value, label, type, disabled }) => {
 			type={type}
 			value={value}
 			id={id}
+			required={required}
 			className="
         mt-1 
         block 
